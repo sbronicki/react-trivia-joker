@@ -1,0 +1,32 @@
+.Header ul {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+/* ul,li {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+ul{
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    list-style: none;
+}
+li{
+    width: 100%;
+    min-height: 97px;
+    border: 1px solid #eee;
+    box-shadow: 0 2px 3px #ccc;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 3px 0;
+}
+img{
+    max-width: 100px;
+} */

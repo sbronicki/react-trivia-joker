@@ -1,0 +1,18 @@
+.HeaderItemCard {
+    height: 16vh;
+    width: 100%;
+    border: 1px solid #eee;
+    box-shadow: 0 2px 3px #ccc;
+    padding: 5px;
+}
+.HeaderItemCard img{
+    max-width: 100%;
+}
+.HeaderItemCard p {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 0;
+    padding: 16px 0;
+}
+
+
