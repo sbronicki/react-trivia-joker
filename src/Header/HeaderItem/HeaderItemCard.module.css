@@ -4,6 +4,10 @@
     border: 1px solid #eee;
     box-shadow: 0 2px 3px #ccc;
     padding: 5px;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
 }
 .HeaderItemCard img{
     max-width: 100%;
@@ -11,8 +15,14 @@
 .HeaderItemCard p {
     font-size: 1.5rem;
     font-weight: bold;
-    margin: 0;
-    padding: 16px 0;
 }
 
 
+@media(min-width: 500px) {
+    .HeaderItemCard img {
+        max-height: 100%;
+    }
+    .HeaderItemCard p{
+        font-size: 3.5rem;
+    }
+}

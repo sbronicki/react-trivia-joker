@@ -1,5 +1,5 @@
 .Display{
-    margin: 18px 0;
+    margin: 40px 0;
 }
 .Display ul {
     padding: 0;
@@ -26,5 +26,27 @@
     margin: 15px 40px 0 0;
     border-radius: 2px;
     border: 1px solid black;
-    font-size: 1em;
+    font-size: 1rem;
+}
+
+@media(min-width: 500px) {
+     .Display {
+        width: 85%;
+        margin: 16px auto;
+        border: 1px solid #eee;
+        box-shadow: 0 2px 3px #ccc;
+        padding: 28px;
+        height: 420px;
+    }
+    .Display h2 {
+        font-size: 3rem;
+    }
+    .Display p {
+        font-size: 2.5rem;
+    }
+    .Display Select{
+      padding: 16px 80px;
+      font-size: 1.5rem;
+      font-weight: 550;
+    }
 }
