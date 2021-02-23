@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import axios from 'axios'
 
 import classes from './Display.module.css'
+import Button from './Button/Button'
 import Footer from './Footer/Footer'
 
 class Display extends Component {
@@ -30,7 +31,8 @@ class Display extends Component {
     render(){
         return(
             <div className={classes.Display}>
-            <h2>Choose trivia settings</h2>
+            <h2>Test your knowledge!</h2>
+            <p>Choose trivia settings</p>
                 <ul>
                     <li>
                         <p>Category:</p>
@@ -54,6 +56,7 @@ class Display extends Component {
                         </select>
                     </li>
                 </ul>
+                <Button btnType={'Submit'} >Submit</Button>
                 <Footer />
             </div>
           )}

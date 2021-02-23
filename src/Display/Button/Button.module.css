@@ -1,0 +1,19 @@
+.Button {
+    cursor: pointer;
+    border-radius: 2px;
+    border: 1px solid black;
+    background-color: ivory;
+    margin-top: 18px;
+    padding: 10px 20px;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+@media(min-width: 600px) {
+  .Button {
+       margin-top: 110px;
+       padding: 15px 25px;
+       font-size: 28px;
+       font-weight: 700;
+    }
+}

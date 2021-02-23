@@ -11,7 +11,7 @@
 }
 
 
-@media(min-width: 500px){
+@media(min-width: 600px){
     .Footer ul{
         display: flex;
         align-items: flex-end;
