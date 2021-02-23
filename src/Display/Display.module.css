@@ -24,6 +24,7 @@
 .Display Select{
     padding: 8px;
     margin: 15px 40px 0 0;
+    width: 100px;
     border-radius: 2px;
     border: 1px solid black;
     font-size: 1rem;
@@ -45,8 +46,10 @@
         font-size: 2.5rem;
     }
     .Display Select{
-      padding: 16px 80px;
-      font-size: 1.5rem;
-      font-weight: 550;
+        margin-right:10%;
+        min-width: 35%;
+        padding: 16px 0px 16px 5%;
+        font-size: 1.5rem;
+        font-weight: 550;
     }
 }
