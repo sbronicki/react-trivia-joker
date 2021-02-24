@@ -1,12 +1,14 @@
 import React from 'react'
 
-import JokerLogo from '../../../img/Logos/JokerLogo'
+
+import JokerLogo from '../../../../img/Logos/sadJoker'
 import classes from '../HeaderItemCard.module.css'
 
-const headerItemImageHappy = (props) => (
+
+const headerItemImageSad = (props) => (
     <li className={classes.HeaderItemCard}>
         <JokerLogo />
     </li>
 )
 
-export default headerItemImageHappy
+export default headerItemImageSad

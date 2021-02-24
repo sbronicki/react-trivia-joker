@@ -9,6 +9,9 @@
     justify-content: center;
 
 }
+.Footer ul {
+    list-style: none;
+}
 
 
 @media(min-width: 600px){

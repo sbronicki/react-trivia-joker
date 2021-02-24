@@ -2,8 +2,7 @@ import React, {Component} from 'react'
 import axios from 'axios'
 
 import classes from './Display.module.css'
-import Button from './Button/Button'
-import Footer from './Footer/Footer'
+import Button from '../../Button/Button'
 
 class Display extends Component {
     state = {
@@ -11,6 +10,14 @@ class Display extends Component {
     }
 
     categories = []
+    apiRequestURL = ''
+
+     generateRequstHandler = () => {
+        // if(type === 'True/False') type = 'boolean'
+        // else if(type === 'Multiple Choice') type = 'multiple'
+        // return `https://opentdb.com/api.php?amount=10category=${ID}&difficulty=${difficulty}&type=${type}`
+        console.log('workingggggg')
+      }
 
     componentDidMount() {
         axios
@@ -56,8 +63,7 @@ class Display extends Component {
                         </select>
                     </li>
                 </ul>
-                <Button btnType={'Submit'} >Submit</Button>
-                <Footer />
+                <Button btnType="Submit" clicked={this.props.generateRequstURL}>Submit</Button>
             </div>
           )}
 }

@@ -2,11 +2,13 @@
     cursor: pointer;
     border-radius: 2px;
     border: 1px solid black;
-    background-color: ivory;
     margin-top: 18px;
     padding: 10px 20px;
     font-size: 18px;
     font-weight: 700;
+}
+.Submit {
+    background-color: ivory;
 }
 
 @media(min-width: 600px) {

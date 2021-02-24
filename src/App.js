@@ -1,15 +1,10 @@
 import './App.css';
-import Header from './Header/Header'
-import Display from './Display/Display'
-// import Card from './Card/Card'
-
+import Layout from './Layout/Layout'
 
 function App() {
   return (
     <div className="App">
-      <Header />
-      <Display />
-      {/* <Card /> */}
+     <Layout />
     </div>
   );
 }
