@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import axios from 'axios'
+// import Skeleton from 'react-loading-skeleton' 
 
 import classes from './Display.module.css'
 import Button from '../../Button/Button'
@@ -12,12 +13,18 @@ class Display extends Component {
     categories = []
     categoryIndex = {}
 
-    // need to pass selectedValues to generateRequestURLHandler in Layout.js
-    // maybe instead of default have "please select values" or something with sselectedValues = { null }
     selectedValues = {
         category: '9',
         difficulty: 'easy',
         type: 'boolean'
+    }
+    requstURLHandler = () => {
+        // console.log(`https://opentdb.com/api.php?amount=10&category=${this.selectedValues.category}&difficulty=${this.selectedValues.difficulty}&type=${this.selectedValues.type}`)
+        axios
+        .get(`https://opentdb.com/api.php?amount=10&category=${this.selectedValues.category}&difficulty=${this.selectedValues.difficulty}&type=${this.selectedValues.type}`)
+        .then(response => {
+            console.log(response.data.results)
+        })
     }
 
     choiceSelected = (e) => {
@@ -53,9 +60,6 @@ class Display extends Component {
                 <ul>
                     <li>
                         <p>Category:</p>
-                        {/* can i do this without chaning state just
-                         have select filled with only one render 
-                         and convert to function component ?  */}
                         <select name="category" onChange={this.choiceSelected}>
                             {this.state.categoryOptions}
                         </select>
@@ -76,7 +80,9 @@ class Display extends Component {
                         </select>
                     </li>
                 </ul>
-                <Button btnType="Submit" clicked={this.props.generateRequstURL}>Submit</Button>
+                <Button 
+                btnType="Submit"
+                clicked={this.requstURLHandler}>Submit</Button>
             </div>
           )}
 }
