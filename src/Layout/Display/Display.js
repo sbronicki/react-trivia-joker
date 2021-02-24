@@ -10,22 +10,33 @@ class Display extends Component {
     }
 
     categories = []
-    apiRequestURL = ''
+    categoryIndex = {}
 
-     generateRequstHandler = () => {
-        // if(type === 'True/False') type = 'boolean'
-        // else if(type === 'Multiple Choice') type = 'multiple'
-        // return `https://opentdb.com/api.php?amount=10category=${ID}&difficulty=${difficulty}&type=${type}`
-        console.log('workingggggg')
-      }
+    // need to pass selectedValues to generateRequestURLHandler in Layout.js
+    // maybe instead of default have "please select values" or something with sselectedValues = { null }
+    selectedValues = {
+        category: '9',
+        difficulty: 'easy',
+        type: 'boolean'
+    }
 
+    choiceSelected = (e) => {
+        let key = e.target.name
+        if(e.target.name === 'category') {
+            let val = e.target.value
+            let index = this.categoryIndex[val]
+            this.selectedValues[key] = index
+        } else {
+            this.selectedValues[key] = e.target.value
+        }
+    }
     componentDidMount() {
         axios
         .get('https://opentdb.com/api_category.php')
         .then(response => {
             for(let category of response.data.trivia_categories){
                this.categories.push(category.name)
-            //    this.ids.push(category.id)
+               this.categoryIndex[category.name] = category.id
             }
             this.setState({
                 categoryOptions: this.categories.map((category, index) => {
@@ -34,7 +45,6 @@ class Display extends Component {
             })
         })
     }
-    
     render(){
         return(
             <div className={classes.Display}>
@@ -43,13 +53,16 @@ class Display extends Component {
                 <ul>
                     <li>
                         <p>Category:</p>
-                        <select name="subject">
+                        {/* can i do this without chaning state just
+                         have select filled with only one render 
+                         and convert to function component ?  */}
+                        <select name="category" onChange={this.choiceSelected}>
                             {this.state.categoryOptions}
                         </select>
                     </li>
                     <li>
                         <p>Difficulty:</p>                     
-                        <select name="difficuly">
+                        <select name="difficulty" onChange={this.choiceSelected}>
                             <option value="easy">Easy</option>
                             <option value="medium">Medium</option>
                             <option value="hard">Hard</option>
@@ -57,9 +70,9 @@ class Display extends Component {
                     </li>
                     <li>
                         <p>Type:</p>
-                        <select name="type">
-                            <option value="trueOrFalse">True/False</option>
-                            <option value="multipleChoice">Multiple Choice</option>
+                        <select name="type" onChange={this.choiceSelected}>
+                            <option value="boolean">True/False</option>
+                            <option value="multiple">Multiple Choice</option>
                         </select>
                     </li>
                 </ul>
