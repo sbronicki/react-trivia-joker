@@ -4,10 +4,14 @@ import axios from 'axios'
 
 import classes from './Display.module.css'
 import Button from '../../Button/Button'
+import QuestionDisplay from '../QuestionDisplay/QuestionDisplay'
+import AnswersDisplay from '../AnswersDisplay/AnswersDisplay'
+import AuxWrapper from '../../hoc/AuxWrapper'
 
 class Display extends Component {
     state = {
-        categoryOptions: []
+        categoryOptions: [],
+        isActive: true
     }
 
     categories = []
@@ -19,11 +23,10 @@ class Display extends Component {
         type: 'boolean'
     }
     requstURLHandler = () => {
-        // console.log(`https://opentdb.com/api.php?amount=10&category=${this.selectedValues.category}&difficulty=${this.selectedValues.difficulty}&type=${this.selectedValues.type}`)
         axios
         .get(`https://opentdb.com/api.php?amount=10&category=${this.selectedValues.category}&difficulty=${this.selectedValues.difficulty}&type=${this.selectedValues.type}`)
         .then(response => {
-            console.log(response.data.results)
+            this.setState({isActive: false})
         })
     }
 
@@ -54,6 +57,7 @@ class Display extends Component {
     }
     render(){
         return(
+            this.state.isActive ? 
             <div className={classes.Display}>
             <h2>Test your knowledge!</h2>
             <p>Choose trivia settings</p>
@@ -83,7 +87,11 @@ class Display extends Component {
                 <Button 
                 btnType="Submit"
                 clicked={this.requstURLHandler}>Submit</Button>
-            </div>
+            </div> : 
+                <AuxWrapper>
+                    <QuestionDisplay />
+                    <AnswersDisplay />
+                </AuxWrapper> 
           )}
 }
 export default Display

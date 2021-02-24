@@ -4,6 +4,7 @@ import AuxWrapper from '../hoc/AuxWrapper'
 import Header from './Header/Header'
 import Footer from './Footer/Footer'
 import Display from './Display/Display'
+// import QuestionDisplay from './QuestionDisplay/QuestionDisplay'
 
 class Layout extends Component {
     render() {
@@ -11,6 +12,7 @@ class Layout extends Component {
             <AuxWrapper>
                 <Header />
                 <Display />
+                {/* <QuestionDisplay /> */}
                 <Footer />
             </AuxWrapper>    
         )
