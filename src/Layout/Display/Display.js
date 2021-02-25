@@ -13,20 +13,18 @@ class Display extends Component {
         categoryOptions: [],
         isActive: true,
         requestedQuestions: [],
-        requestedAnswerArrays: []
+        requestedAnswerArrays: [],
+        currentQuestionIndex: 0
     }
 
     categories = []
     categoryIndex = {}
    
-    currentQuestionIndex = 0
     requestedQuestions = []
     requestedAnswers = []
-    
-    // NEXT - set function for answer button clicked prop
-    // this will add one to currentQuestionIndex and rerender with the next question 
+    // use lodash for unescaping
     // also restyle QuestionDisplay so longer questions dont spill over
-    
+
     selectedValues = {
         category: '9',
         difficulty: 'easy',
@@ -56,6 +54,10 @@ class Display extends Component {
         } else {
             this.selectedValues[key] = e.target.value
         }
+    }
+    answerSelectedHandler = () => {
+        let questionIndexPlusOne = this.state.currentQuestionIndex + 1
+        this.setState({currentQuestionIndex: questionIndexPlusOne})
     }
     componentDidMount() {
         axios
@@ -107,14 +109,14 @@ class Display extends Component {
             </div> : 
                 <AuxWrapper>
                     <QuestionDisplay>
-                        {this.state.requestedQuestions[this.currentQuestionIndex]}
+                        {this.state.requestedQuestions[this.state.currentQuestionIndex]}
                     </QuestionDisplay>
                     <AnswersDisplay>
                         <ul>
-                            <li><Button btnType="Answer">{this.state.requestedAnswerArrays[this.currentQuestionIndex][0]}</Button></li>
-                            <li><Button btnType="Answer">{this.state.requestedAnswerArrays[this.currentQuestionIndex][1]}</Button></li>
-                            <li><Button btnType={this.state.requestedAnswerArrays[this.currentQuestionIndex][2] ? 'Answer' : 'Hidden'}>{this.state.requestedAnswerArrays[this.currentQuestionIndex][2]}</Button></li>
-                            <li><Button btnType={this.state.requestedAnswerArrays[this.currentQuestionIndex][3] ? 'Answer' : 'Hidden'}>{this.state.requestedAnswerArrays[this.currentQuestionIndex][3]}</Button></li>
+                            <li><Button clicked={this.answerSelectedHandler} btnType="Answer">{this.state.requestedAnswerArrays[this.state.currentQuestionIndex][0]}</Button></li>
+                            <li><Button clicked={this.answerSelectedHandler} btnType="Answer">{this.state.requestedAnswerArrays[this.state.currentQuestionIndex][1]}</Button></li>
+                            <li><Button clicked={this.answerSelectedHandler} btnType={this.state.requestedAnswerArrays[this.state.currentQuestionIndex][2] ? 'Answer' : 'Hidden'}>{this.state.requestedAnswerArrays[this.state.currentQuestionIndex][2]}</Button></li>
+                            <li><Button clicked={this.answerSelectedHandler} btnType={this.state.requestedAnswerArrays[this.state.currentQuestionIndex][3] ? 'Answer' : 'Hidden'}>{this.state.requestedAnswerArrays[this.state.currentQuestionIndex][3]}</Button></li>
                         </ul>
                     </AnswersDisplay>
                 </AuxWrapper> 
