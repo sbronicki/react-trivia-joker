@@ -6,12 +6,16 @@ import classes from './Display.module.css'
 import Button from '../../Button/Button'
 import QuestionDisplay from '../QuestionDisplay/QuestionDisplay'
 import AnswersDisplay from '../AnswersDisplay/AnswersDisplay'
-import AuxWrapper from '../../hoc/AuxWrapper'
+import AnswerEvaluation from '../AnswerEvaluation/AnswerEvaluation'
+import AnswersULWrapper from '../../hoc/AnswersULWrapper'
 
 class Display extends Component {
     state = {
         categoryOptions: [],
-        isActive: true,
+        displayActive: true,
+        answersActive: false,
+        answerEvaluation: null,
+        evaluationActive: false,
         requestedQuestions: [],
         requestedData: [],
         requestedAnswerArrays: [],
@@ -48,7 +52,7 @@ class Display extends Component {
                 this.requestedAnswers.push(allAnswersArray)
             }
             let firstCorrectAnswer = response.data.results[0].correct_answer
-            this.setState({requestedData:response.data.results, isActive: false, requestedQuestions: this.requestedQuestions, requestedAnswerArrays: this.requestedAnswers, currentCorrectAnswer: firstCorrectAnswer})
+            this.setState({requestedData:response.data.results, displayActive: false, answersActive: true, requestedQuestions: this.requestedQuestions, requestedAnswerArrays: this.requestedAnswers, currentCorrectAnswer: firstCorrectAnswer})
         })
     }
     choiceSelectedHandler = (e) => {
@@ -61,18 +65,29 @@ class Display extends Component {
             this.selectedValues[key] = e.target.value
         }
     }
+    // when answer is selected hide answers ul 
+    // and display answer evaluation for like 2 seconds
+    // before showing next question and current score
+
     answerSelectedHandler = (e) => {
         let questionIndexPlusOne = this.state.currentQuestionIndex + 1
         let nextCorrectAnswer = this.state.requestedData[this.state.currentQuestionIndex + 1].correct_answer
         let currentScore = this.state.currentScore
+        let answerEvaluation
 
         if (e.target.innerText === this.state.currentCorrectAnswer) {
             console.log('correct') 
+            answerEvaluation = true
             currentScore += 1 
         } else{
             console.log('incorrect')
+            answerEvaluation = false
         }
-        this.setState({currentQuestionIndex: questionIndexPlusOne, currentScore: currentScore, currentCorrectAnswer: nextCorrectAnswer})
+
+        this.setState({answersActive: false, evaluationActive: true, AnswerEvaluation: answerEvaluation})
+        setTimeout(() => {
+            this.setState({currentQuestionIndex: questionIndexPlusOne, currentScore: currentScore, answersActive: true, evaluationActive: false, currentCorrectAnswer: nextCorrectAnswer})
+        }, 2000)
     }
     componentDidMount() {
         axios
@@ -91,7 +106,7 @@ class Display extends Component {
     }
     render(){
         return(
-            this.state.isActive ? 
+            this.state.displayActive ? 
             <div className={classes.Display}>
             <h2>Test your knowledge!</h2>
             <p>Choose trivia settings</p>
@@ -122,19 +137,26 @@ class Display extends Component {
                 btnType="Submit"
                 clicked={this.requstURLHandler}>Submit</Button>
             </div> : 
-                <AuxWrapper>
+                <div>
                     <QuestionDisplay>
                         {this.state.currentQuestionIndex + 1}: {this.state.requestedQuestions[this.state.currentQuestionIndex]}
                     </QuestionDisplay>
                     <AnswersDisplay>
-                        <ul>
-                            <li><Button clicked={this.answerSelectedHandler} btnType="Answer">{this.state.requestedAnswerArrays[this.state.currentQuestionIndex][0]}</Button></li>
-                            <li><Button clicked={this.answerSelectedHandler} btnType="Answer">{this.state.requestedAnswerArrays[this.state.currentQuestionIndex][1]}</Button></li>
-                            <li><Button clicked={this.answerSelectedHandler} btnType={this.state.requestedAnswerArrays[this.state.currentQuestionIndex][2] ? 'Answer' : 'Hidden'}>{this.state.requestedAnswerArrays[this.state.currentQuestionIndex][2]}</Button></li>
-                            <li><Button clicked={this.answerSelectedHandler} btnType={this.state.requestedAnswerArrays[this.state.currentQuestionIndex][3] ? 'Answer' : 'Hidden'}>{this.state.requestedAnswerArrays[this.state.currentQuestionIndex][3]}</Button></li>
-                        </ul>
+                    {this.state.evaluationActive ?
+                        <section>
+                            {this.state.AnswerEvaluation ? <AnswerEvaluation Correct className={AnswerEvaluation} /> : <AnswerEvaluation className={AnswerEvaluation} />}
+                        </section> : null }
+                        <AnswersULWrapper>
+                            {this.state.answersActive ? 
+                            <ul>
+                                <li><Button clicked={this.answerSelectedHandler} btnType="Answer">{this.state.requestedAnswerArrays[this.state.currentQuestionIndex][0]}</Button></li>
+                                <li><Button clicked={this.answerSelectedHandler} btnType="Answer">{this.state.requestedAnswerArrays[this.state.currentQuestionIndex][1]}</Button></li>
+                                <li><Button clicked={this.answerSelectedHandler} btnType={this.state.requestedAnswerArrays[this.state.currentQuestionIndex][2] ? 'Answer' : 'Hidden'}>{this.state.requestedAnswerArrays[this.state.currentQuestionIndex][2]}</Button></li>
+                                <li><Button clicked={this.answerSelectedHandler} btnType={this.state.requestedAnswerArrays[this.state.currentQuestionIndex][3] ? 'Answer' : 'Hidden'}>{this.state.requestedAnswerArrays[this.state.currentQuestionIndex][3]}</Button></li>
+                            </ul> : null}
+                        </AnswersULWrapper>
                     </AnswersDisplay>
-                </AuxWrapper> 
+                </div> 
           )}
 }
 export default Display

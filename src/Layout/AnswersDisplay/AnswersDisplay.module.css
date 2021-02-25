@@ -9,6 +9,9 @@
 .AnswersDisplay ul {
     list-style: none;
 }
+.AnswersDisplay section{
+ 
+}
 
 @media(min-width: 600px){
     .AnswersDisplay{

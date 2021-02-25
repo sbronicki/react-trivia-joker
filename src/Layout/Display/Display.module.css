@@ -32,7 +32,7 @@
     background-color: ivory;
 }
 .Display Button {
-    margin-top: 110px;
+    margin-top: 20px;
 }
 
 @media(min-width: 600px) {
@@ -60,5 +60,8 @@
         padding: 16px 0px 16px 5%;
         font-size: 1.5rem;
         font-weight: 550;
+    }
+    .Display Button {
+        margin-top: 110px;
     }
 }
