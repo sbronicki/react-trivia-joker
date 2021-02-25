@@ -26,10 +26,11 @@ class Display extends Component {
 
     categories = []
     categoryIndex = {}
-   
+    currentScore = 0
     firstCorrectAnswer =''
     requestedQuestions = []
     requestedAnswers = []
+    // use skeleton as ui loader
     // use llodash for unescaping
     // also restyle QuestionDisplay so longer questions dont spill over
 
@@ -65,9 +66,6 @@ class Display extends Component {
             this.selectedValues[key] = e.target.value
         }
     }
-    // when answer is selected hide answers ul 
-    // and display answer evaluation for like 2 seconds
-    // before showing next question and current score
 
     answerSelectedHandler = (e) => {
         let questionIndexPlusOne = this.state.currentQuestionIndex + 1
@@ -79,11 +77,11 @@ class Display extends Component {
             console.log('correct') 
             answerEvaluation = true
             currentScore += 1 
+            this.currentScore = currentScore
         } else{
             console.log('incorrect')
             answerEvaluation = false
         }
-
         this.setState({answersActive: false, evaluationActive: true, AnswerEvaluation: answerEvaluation})
         setTimeout(() => {
             this.setState({currentQuestionIndex: questionIndexPlusOne, currentScore: currentScore, answersActive: true, evaluationActive: false, currentCorrectAnswer: nextCorrectAnswer})
@@ -141,10 +139,11 @@ class Display extends Component {
                     <QuestionDisplay>
                         {this.state.currentQuestionIndex + 1}: {this.state.requestedQuestions[this.state.currentQuestionIndex]}
                     </QuestionDisplay>
+                        <strong><p>Current Score: {this.currentScore}</p></strong>
                     <AnswersDisplay>
                     {this.state.evaluationActive ?
                         <section>
-                            {this.state.AnswerEvaluation ? <AnswerEvaluation Correct className={AnswerEvaluation} /> : <AnswerEvaluation className={AnswerEvaluation} />}
+                            {this.state.AnswerEvaluation ? <AnswerEvaluation Correct /> : <AnswerEvaluation />}
                         </section> : null }
                         <AnswersULWrapper>
                             {this.state.answersActive ? 

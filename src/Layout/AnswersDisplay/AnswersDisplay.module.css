@@ -9,15 +9,12 @@
 .AnswersDisplay ul {
     list-style: none;
 }
-.AnswersDisplay section{
- 
-}
 
 @media(min-width: 600px){
     .AnswersDisplay{
         border: 1px solid #eee;
         box-shadow: 0 2px 3px #ccc;
-        height: 48vh;
+        height: 47vh;
         width: 90%;
         margin: 1% auto;
         font-size: 36px;
