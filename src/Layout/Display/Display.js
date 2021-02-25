@@ -139,7 +139,7 @@ class Display extends Component {
                     <QuestionDisplay>
                         {this.state.currentQuestionIndex + 1}: {this.state.requestedQuestions[this.state.currentQuestionIndex]}
                     </QuestionDisplay>
-                        <strong><p>Current Score: {this.currentScore}</p></strong>
+                        <strong><p style={{margin: '5px'}}>Current Score: {this.currentScore}</p></strong>
                     <AnswersDisplay>
                     {this.state.evaluationActive ?
                         <section>

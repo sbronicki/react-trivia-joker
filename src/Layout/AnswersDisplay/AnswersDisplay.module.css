@@ -1,5 +1,5 @@
 .AnswersDisplay {
-    height: 45vh;
+    height: 33vh;
     width: 100%;
     display: flex;
     text-align: center;
@@ -8,8 +8,12 @@
 }
 .AnswersDisplay ul {
     list-style: none;
+    padding: 0;
+    margin: 0;
 }
-
+.AnswersDisplay Button {
+    margin: 5px;
+}
 @media(min-width: 600px){
     .AnswersDisplay{
         border: 1px solid #eee;
@@ -18,5 +22,12 @@
         width: 90%;
         margin: 1% auto;
         font-size: 36px;
+    }
+    .AnswersDisplay ul {
+        list-style: none;
+        margin: 18px;
+    }
+    .AnswersDisplay Button {
+        margin: 15px;
     }
 }
