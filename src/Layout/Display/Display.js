@@ -11,11 +11,15 @@ import AuxWrapper from '../../hoc/AuxWrapper'
 class Display extends Component {
     state = {
         categoryOptions: [],
-        isActive: true
+        isActive: true,
+        requestedData: []
     }
 
     categories = []
     categoryIndex = {}
+    // fill arrays with appropriate data and use that for indexing
+    requestedQuestions = []
+    requestedAnswers = []
 
     selectedValues = {
         category: '9',
@@ -26,10 +30,10 @@ class Display extends Component {
         axios
         .get(`https://opentdb.com/api.php?amount=10&category=${this.selectedValues.category}&difficulty=${this.selectedValues.difficulty}&type=${this.selectedValues.type}`)
         .then(response => {
-            this.setState({isActive: false})
+            this.setState({isActive: false, requestedData: response.data.results})
+            console.log(this.state.requestedData)
         })
     }
-
     choiceSelected = (e) => {
         let key = e.target.name
         if(e.target.name === 'category') {
@@ -89,8 +93,11 @@ class Display extends Component {
                 clicked={this.requstURLHandler}>Submit</Button>
             </div> : 
                 <AuxWrapper>
-                    <QuestionDisplay />
-                    <AnswersDisplay />
+                    <QuestionDisplay>{this.state.requestedData[0].question}</QuestionDisplay>
+                    <AnswersDisplay>
+                        {this.state.requestedData[0].correct_answer}
+                        {this.state.requestedData[0].incorrect_answers}
+                    </AnswersDisplay>
                 </AuxWrapper> 
           )}
 }
