@@ -13,16 +13,19 @@ class Display extends Component {
         categoryOptions: [],
         isActive: true,
         requestedQuestions: [],
+        requestedData: [],
         requestedAnswerArrays: [],
-        currentQuestionIndex: 0
+        currentQuestionIndex: 0,
+        currentCorrectAnswer: ''
     }
 
     categories = []
     categoryIndex = {}
    
+    firstCorrectAnswer =''
     requestedQuestions = []
     requestedAnswers = []
-    // use lodash for unescaping
+    // use llodash for unescaping
     // also restyle QuestionDisplay so longer questions dont spill over
 
     selectedValues = {
@@ -38,14 +41,16 @@ class Display extends Component {
                 this.requestedQuestions.push(response.data.results[response.data.results.indexOf(entry)].question)
 
                 let incorrectAnswersArray = response.data.results[response.data.results.indexOf(entry)].incorrect_answers
-                let allAnswersArray = [...incorrectAnswersArray, response.data.results[response.data.results.indexOf(entry)].correct_answer]
+                let correctAnswer = response.data.results[response.data.results.indexOf(entry)].correct_answer
+                let allAnswersArray = [...incorrectAnswersArray, correctAnswer]
 
                 this.requestedAnswers.push(allAnswersArray)
             }
-            this.setState({isActive: false, requestedQuestions: this.requestedQuestions, requestedAnswerArrays: this.requestedAnswers})
+            let firstCorrectAnswer = response.data.results[0].correct_answer
+            this.setState({requestedData:response.data.results, isActive: false, requestedQuestions: this.requestedQuestions, requestedAnswerArrays: this.requestedAnswers, currentCorrectAnswer: firstCorrectAnswer})
         })
     }
-    choiceSelected = (e) => {
+    choiceSelectedHandler = (e) => {
         let key = e.target.name
         if(e.target.name === 'category') {
             let val = e.target.value
@@ -55,9 +60,17 @@ class Display extends Component {
             this.selectedValues[key] = e.target.value
         }
     }
-    answerSelectedHandler = () => {
+    answerSelectedHandler = (e) => {
         let questionIndexPlusOne = this.state.currentQuestionIndex + 1
-        this.setState({currentQuestionIndex: questionIndexPlusOne})
+        let nextCorrectAnswer = this.state.requestedData[this.state.currentQuestionIndex + 1].correct_answer
+
+        if (e.target.innerText === this.state.currentCorrectAnswer) {
+            console.log('correct')
+        } else{
+            console.log('incorrect')
+        }
+
+        this.setState({currentQuestionIndex: questionIndexPlusOne, currentCorrectAnswer: nextCorrectAnswer})
     }
     componentDidMount() {
         axios
@@ -83,13 +96,13 @@ class Display extends Component {
                 <ul>
                     <li>
                         <p>Category:</p>
-                        <select name="category" onChange={this.choiceSelected}>
+                        <select name="category" onChange={this.choiceSelectedHandler}>
                             {this.state.categoryOptions}
                         </select>
                     </li>
                     <li>
                         <p>Difficulty:</p>                     
-                        <select name="difficulty" onChange={this.choiceSelected}>
+                        <select name="difficulty" onChange={this.choiceSelectedHandler}>
                             <option value="easy">Easy</option>
                             <option value="medium">Medium</option>
                             <option value="hard">Hard</option>
@@ -97,7 +110,7 @@ class Display extends Component {
                     </li>
                     <li>
                         <p>Type:</p>
-                        <select name="type" onChange={this.choiceSelected}>
+                        <select name="type" onChange={this.choiceSelectedHandler}>
                             <option value="boolean">True/False</option>
                             <option value="multiple">Multiple Choice</option>
                         </select>
@@ -109,6 +122,7 @@ class Display extends Component {
             </div> : 
                 <AuxWrapper>
                     <QuestionDisplay>
+                        {this.state.currentQuestionIndex}: 
                         {this.state.requestedQuestions[this.state.currentQuestionIndex]}
                     </QuestionDisplay>
                     <AnswersDisplay>
