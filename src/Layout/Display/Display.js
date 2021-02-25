@@ -16,7 +16,8 @@ class Display extends Component {
         requestedData: [],
         requestedAnswerArrays: [],
         currentQuestionIndex: 0,
-        currentCorrectAnswer: ''
+        currentCorrectAnswer: '',
+        currentScore: 0
     }
 
     categories = []
@@ -63,14 +64,15 @@ class Display extends Component {
     answerSelectedHandler = (e) => {
         let questionIndexPlusOne = this.state.currentQuestionIndex + 1
         let nextCorrectAnswer = this.state.requestedData[this.state.currentQuestionIndex + 1].correct_answer
+        let currentScore = this.state.currentScore
 
         if (e.target.innerText === this.state.currentCorrectAnswer) {
-            console.log('correct')
+            console.log('correct') 
+            currentScore += 1 
         } else{
             console.log('incorrect')
         }
-
-        this.setState({currentQuestionIndex: questionIndexPlusOne, currentCorrectAnswer: nextCorrectAnswer})
+        this.setState({currentQuestionIndex: questionIndexPlusOne, currentScore: currentScore, currentCorrectAnswer: nextCorrectAnswer})
     }
     componentDidMount() {
         axios
@@ -122,8 +124,7 @@ class Display extends Component {
             </div> : 
                 <AuxWrapper>
                     <QuestionDisplay>
-                        {this.state.currentQuestionIndex}: 
-                        {this.state.requestedQuestions[this.state.currentQuestionIndex]}
+                        {this.state.currentQuestionIndex + 1}: {this.state.requestedQuestions[this.state.currentQuestionIndex]}
                     </QuestionDisplay>
                     <AnswersDisplay>
                         <ul>
