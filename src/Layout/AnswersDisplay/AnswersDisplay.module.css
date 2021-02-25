@@ -6,6 +6,9 @@
     align-items: center;
     justify-content: center;
 }
+.AnswersDisplay ul {
+    list-style: none;
+}
 
 @media(min-width: 600px){
     .AnswersDisplay{

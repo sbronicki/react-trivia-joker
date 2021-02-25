@@ -12,15 +12,21 @@ class Display extends Component {
     state = {
         categoryOptions: [],
         isActive: true,
-        requestedData: []
+        requestedQuestions: [],
+        requestedAnswerArrays: []
     }
 
     categories = []
     categoryIndex = {}
-    // fill arrays with appropriate data and use that for indexing
+   
+    currentQuestionIndex = 0
     requestedQuestions = []
     requestedAnswers = []
-
+    
+    // NEXT - set function for answer button clicked prop
+    // this will add one to currentQuestionIndex and rerender with the next question 
+    // also restyle QuestionDisplay so longer questions dont spill over
+    
     selectedValues = {
         category: '9',
         difficulty: 'easy',
@@ -30,8 +36,15 @@ class Display extends Component {
         axios
         .get(`https://opentdb.com/api.php?amount=10&category=${this.selectedValues.category}&difficulty=${this.selectedValues.difficulty}&type=${this.selectedValues.type}`)
         .then(response => {
-            this.setState({isActive: false, requestedData: response.data.results})
-            console.log(this.state.requestedData)
+            for(let entry of response.data.results) {
+                this.requestedQuestions.push(response.data.results[response.data.results.indexOf(entry)].question)
+
+                let incorrectAnswersArray = response.data.results[response.data.results.indexOf(entry)].incorrect_answers
+                let allAnswersArray = [...incorrectAnswersArray, response.data.results[response.data.results.indexOf(entry)].correct_answer]
+
+                this.requestedAnswers.push(allAnswersArray)
+            }
+            this.setState({isActive: false, requestedQuestions: this.requestedQuestions, requestedAnswerArrays: this.requestedAnswers})
         })
     }
     choiceSelected = (e) => {
@@ -93,10 +106,16 @@ class Display extends Component {
                 clicked={this.requstURLHandler}>Submit</Button>
             </div> : 
                 <AuxWrapper>
-                    <QuestionDisplay>{this.state.requestedData[0].question}</QuestionDisplay>
+                    <QuestionDisplay>
+                        {this.state.requestedQuestions[this.currentQuestionIndex]}
+                    </QuestionDisplay>
                     <AnswersDisplay>
-                        {this.state.requestedData[0].correct_answer}
-                        {this.state.requestedData[0].incorrect_answers}
+                        <ul>
+                            <li><Button btnType="Answer">{this.state.requestedAnswerArrays[this.currentQuestionIndex][0]}</Button></li>
+                            <li><Button btnType="Answer">{this.state.requestedAnswerArrays[this.currentQuestionIndex][1]}</Button></li>
+                            <li><Button btnType={this.state.requestedAnswerArrays[this.currentQuestionIndex][2] ? 'Answer' : 'Hidden'}>{this.state.requestedAnswerArrays[this.currentQuestionIndex][2]}</Button></li>
+                            <li><Button btnType={this.state.requestedAnswerArrays[this.currentQuestionIndex][3] ? 'Answer' : 'Hidden'}>{this.state.requestedAnswerArrays[this.currentQuestionIndex][3]}</Button></li>
+                        </ul>
                     </AnswersDisplay>
                 </AuxWrapper> 
           )}
