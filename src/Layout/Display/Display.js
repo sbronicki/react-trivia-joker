@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import axios from 'axios'
+import unescape from 'lodash/unescape'
 // import Skeleton from 'react-loading-skeleton' 
 
 import classes from './Display.module.css'
@@ -9,6 +10,13 @@ import AnswersDisplay from '../AnswersDisplay/AnswersDisplay'
 import AnswerEvaluation from '../AnswerEvaluation/AnswerEvaluation'
 import AnswersULWrapper from '../../hoc/AnswersULWrapper'
 import ResultsPage from '../ResultsPage/ResultsPage'
+import DataErrorMessage from '../../Error/DataError'
+import NetworkErrorMessage from '../../Error/NetworkError'
+
+    // STILL NEED TO DO:
+    // fix mobile view => footer blocking submit either disable on mobile or restyle
+    // use skeleton as ui loader
+    // general restructure => delegate code to differennt functions / apps & combine reused css to utility files
 
 class Display extends Component {
     state = {
@@ -23,7 +31,10 @@ class Display extends Component {
         currentQuestionIndex: 0,
         currentCorrectAnswer: '',
         currentScore: 0,
-        resultsPageActive: false
+        resultsPageActive: false,
+        error: false,
+        dataError: false,
+        networkError: false
     }
 
     categories = []
@@ -32,11 +43,6 @@ class Display extends Component {
     firstCorrectAnswer =''
     requestedQuestions = []
     requestedAnswers = []
-
-    // display final score  with rating from joker =>scholar and restart button
-    // use skeleton as ui loader
-    // use lodash for unescaping
-    // also restyle QuestionDisplay so longer questions dont spill over
 
     selectedValues = {
         category: '9',
@@ -48,16 +54,18 @@ class Display extends Component {
         .get(`https://opentdb.com/api.php?amount=10&category=${this.selectedValues.category}&difficulty=${this.selectedValues.difficulty}&type=${this.selectedValues.type}`)
         .then(response => {
             for(let entry of response.data.results) {
-                this.requestedQuestions.push(response.data.results[response.data.results.indexOf(entry)].question)
+                this.requestedQuestions.push(unescape(response.data.results[response.data.results.indexOf(entry)].question))
 
                 let incorrectAnswersArray = response.data.results[response.data.results.indexOf(entry)].incorrect_answers
-                let correctAnswer = response.data.results[response.data.results.indexOf(entry)].correct_answer
+                let correctAnswer = unescape(response.data.results[response.data.results.indexOf(entry)].correct_answer)
                 let allAnswersArray = [...incorrectAnswersArray, correctAnswer]
 
                 this.requestedAnswers.push(allAnswersArray)
             }
             let firstCorrectAnswer = response.data.results[0].correct_answer
             this.setState({requestedData:response.data.results, homeDisplayActive: false, answersActive: true, requestedQuestions: this.requestedQuestions, requestedAnswerArrays: this.requestedAnswers, currentCorrectAnswer: firstCorrectAnswer})
+        }).catch(error => {
+            this.setState({error: true, dataError: true})
         })
     }
     choiceSelectedHandler = (e) => {
@@ -85,7 +93,7 @@ class Display extends Component {
             this.setState({answersActive: false, evaluationActive: true, answerEvaluation: answerEvaluation, currentScore: this.currentScore})
             setTimeout(() => {
                 this.setState({resultsPageActive: true, currentScore: this.currentScore})
-            }, 200);
+            }, 2000);
             return 
         } else {
             let questionIndexPlusOne = this.state.currentQuestionIndex + 1
@@ -101,7 +109,7 @@ class Display extends Component {
             this.setState({answersActive: false, evaluationActive: true, answerEvaluation: answerEvaluation})
             setTimeout(() => {
                 this.setState({currentQuestionIndex: questionIndexPlusOne, currentScore: currentScore, answersActive: true, evaluationActive: false, currentCorrectAnswer: nextCorrectAnswer})
-            }, 200)}
+            }, 2000)}
     }
     ratingHandler = (score) => {
         let rating = ''
@@ -146,11 +154,14 @@ class Display extends Component {
                     return <option key={index}>{category}</option>}
                 )
             })
+        }).catch(error => {
+            this.setState({error: true, networkError: true})
         })
     }
     render(){
         return(
-            this.state.homeDisplayActive ? 
+            this.state.error ?  (this.state.networkError ? <NetworkErrorMessage /> : <DataErrorMessage />) :
+        this.state.homeDisplayActive ? 
             <div className={classes.Display}>
             <h2>Test your knowledge!</h2>
             <p>Choose trivia settings</p>
@@ -205,7 +216,7 @@ class Display extends Component {
                     </AnswersDisplay>
                     </div> : <ResultsPage FinalScore={this.state.currentScore} Rating={this.ratingHandler(this.state.currentScore)}/>
                     }
-                </div> 
+                </div>
           )}
 }
 export default Display

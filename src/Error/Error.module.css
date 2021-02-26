@@ -1,0 +1,12 @@
+.Error{
+    height: 55vh;
+    width: 90%;
+    border: 1px solid #eee;
+    box-shadow: 0 2px 3px #ccc;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin: 15px auto;
+}

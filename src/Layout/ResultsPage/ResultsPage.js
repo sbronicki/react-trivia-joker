@@ -8,7 +8,7 @@ const resultsPage = (props) => (
         <h1>Quiz Complete!</h1>
         <p>Your score: <strong>{props.FinalScore}/10</strong></p>
         <p>Your rating: <strong>{props.Rating}</strong></p>
-        <Button disabled clicked={console.log('clicked')}>How bout another?</Button>
+        <a href="/"><Button clicked={console.log('clicked')}>How bout another?</Button></a>
     </div>
 )
 

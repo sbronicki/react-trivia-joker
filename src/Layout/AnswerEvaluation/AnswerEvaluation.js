@@ -5,10 +5,10 @@ import classes from './AnswerEvaluation.module.css'
 const answerEvaluation = (props) => (
     props.Correct ? 
     <div className={[classes.AnswerEvaluation, 'Correct'].join(' ')}>
-    Correct!
+    <strong>Correct!</strong>
     </div> : 
     <div className={[classes.AnswerEvaluation, 'Incorrect'].join(' ')}>
-    Incorrect!
+    <strong>Incorrect!</strong>
     </div> 
 )
 
