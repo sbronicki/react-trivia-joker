@@ -15,11 +15,10 @@ import DataErrorMessage from '../../Error/DataError'
 import NetworkErrorMessage from '../../Error/NetworkError'
 
     // STILL NEED TO DO:
-    // true/false always make true first
     // multiple choice answers 2x2
     // unescape &#39; and &shy;
     // use skeleton as ui loader
-    // general restructure => delegate code to differennt functions / apps & combine reused css to utility files
+    // general restructure => delegate code to different functions / apps & combine reused css to utility files
 
 class Display extends Component {
     state = {
@@ -209,7 +208,7 @@ class Display extends Component {
                     <QuestionDisplay>
                         {this.state.currentQuestionIndex + 1}: {this.state.requestedQuestions[this.state.currentQuestionIndex]}
                     </QuestionDisplay>
-                        <strong><p style={{margin: '10px'}}>Current Score: {this.currentScore}</p></strong>
+                        <strong><p style={{margin: '5px'}}>Current Score: {this.currentScore}</p></strong>
                     <AnswersDisplay>
                     {this.state.evaluationActive ?
                         <section>
