@@ -15,6 +15,9 @@
     padding: 0;
     margin: 15px auto;
 }
+.Footer li{
+    margin: auto;
+}
 
 @media(min-width: 600px){
     .Footer ul{
@@ -23,7 +26,8 @@
         justify-content: center;
     }
     .Footer li {
-        padding: 0 10px;
+        padding: 10px;
+        margin: 0 25px;
     }
 
 }
