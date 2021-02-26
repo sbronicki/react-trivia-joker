@@ -1,8 +1,6 @@
 .QuestionDisplay {
     height: 20vh;
-    width: 90%;
-    margin:15px auto;
-    margin-bottom: 0;
+    width: 100%;
     border: 1px solid #eee;
     box-shadow: 0 2px 3px #ccc;
     display: flex;
@@ -10,14 +8,11 @@
     align-items: center;
     justify-content: center;
 }
-.QuestionDisplay p{
-    margin: auto;
-    padding: 0 10px;
-}
 
 @media(min-width: 600px) {
     .QuestionDisplay{
         width: 80%;
+        margin: 0 auto;
         max-width: 1000px;
         font-size: 36px;
     }
