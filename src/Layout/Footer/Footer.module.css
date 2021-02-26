@@ -1,17 +1,19 @@
 .Footer {
+    display: flex;
     position: absolute; 
     left: 0%;
     bottom: 0;
     width: 100%;
     background-color: #111;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
 }
 .Footer ul {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     list-style: none;
-    margin: 10px auto; 
     padding: 0;
+    margin: 15px auto;
 }
 
 @media(min-width: 600px){

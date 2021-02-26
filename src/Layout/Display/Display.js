@@ -14,6 +14,7 @@ import DataErrorMessage from '../../Error/DataError'
 import NetworkErrorMessage from '../../Error/NetworkError'
 
     // STILL NEED TO DO:
+    // make correct answer choice random
     // fix mobile view => footer blocking submit either disable on mobile or restyle
     // use skeleton as ui loader
     // general restructure => delegate code to differennt functions / apps & combine reused css to utility files
