@@ -1,0 +1,23 @@
+.ResultsPage{
+    height: 60vh;
+    width: 100%;
+    border: 1px solid #eee;
+    box-shadow: 0 2px 3px #ccc;
+    padding: 5px;
+    display: flex;
+    flex-flow: column;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+
+@media(min-width: 600px){
+    .ResultsPage{
+        margin: 15px auto;
+        height: 68vh;
+        width:80%;
+    }
+    .ResultsPage{
+        font-size: 2rem;
+    }
+}

@@ -8,11 +8,12 @@ import QuestionDisplay from '../QuestionDisplay/QuestionDisplay'
 import AnswersDisplay from '../AnswersDisplay/AnswersDisplay'
 import AnswerEvaluation from '../AnswerEvaluation/AnswerEvaluation'
 import AnswersULWrapper from '../../hoc/AnswersULWrapper'
+import ResultsPage from '../ResultsPage/ResultsPage'
 
 class Display extends Component {
     state = {
         categoryOptions: [],
-        displayActive: true,
+        homeDisplayActive: true,
         answersActive: false,
         answerEvaluation: null,
         evaluationActive: false,
@@ -21,7 +22,8 @@ class Display extends Component {
         requestedAnswerArrays: [],
         currentQuestionIndex: 0,
         currentCorrectAnswer: '',
-        currentScore: 0
+        currentScore: 0,
+        resultsPageActive: false
     }
 
     categories = []
@@ -30,8 +32,10 @@ class Display extends Component {
     firstCorrectAnswer =''
     requestedQuestions = []
     requestedAnswers = []
+
+    // display final score  with rating from joker =>scholar and restart button
     // use skeleton as ui loader
-    // use llodash for unescaping
+    // use lodash for unescaping
     // also restyle QuestionDisplay so longer questions dont spill over
 
     selectedValues = {
@@ -53,7 +57,7 @@ class Display extends Component {
                 this.requestedAnswers.push(allAnswersArray)
             }
             let firstCorrectAnswer = response.data.results[0].correct_answer
-            this.setState({requestedData:response.data.results, displayActive: false, answersActive: true, requestedQuestions: this.requestedQuestions, requestedAnswerArrays: this.requestedAnswers, currentCorrectAnswer: firstCorrectAnswer})
+            this.setState({requestedData:response.data.results, homeDisplayActive: false, answersActive: true, requestedQuestions: this.requestedQuestions, requestedAnswerArrays: this.requestedAnswers, currentCorrectAnswer: firstCorrectAnswer})
         })
     }
     choiceSelectedHandler = (e) => {
@@ -66,26 +70,68 @@ class Display extends Component {
             this.selectedValues[key] = e.target.value
         }
     }
-
     answerSelectedHandler = (e) => {
-        let questionIndexPlusOne = this.state.currentQuestionIndex + 1
-        let nextCorrectAnswer = this.state.requestedData[this.state.currentQuestionIndex + 1].correct_answer
-        let currentScore = this.state.currentScore
         let answerEvaluation
+        let currentScore = this.state.currentScore
 
-        if (e.target.innerText === this.state.currentCorrectAnswer) {
-            console.log('correct') 
-            answerEvaluation = true
-            currentScore += 1 
-            this.currentScore = currentScore
-        } else{
-            console.log('incorrect')
-            answerEvaluation = false
+        if(this.state.currentQuestionIndex > 8){
+            if (e.target.innerText === this.state.currentCorrectAnswer) {
+                answerEvaluation = true
+                currentScore += 1 
+                this.currentScore = currentScore
+            } else{
+                answerEvaluation = false
+            }
+            this.setState({answersActive: false, evaluationActive: true, answerEvaluation: answerEvaluation, currentScore: this.currentScore})
+            setTimeout(() => {
+                this.setState({resultsPageActive: true, currentScore: this.currentScore})
+            }, 200);
+            return 
+        } else {
+            let questionIndexPlusOne = this.state.currentQuestionIndex + 1
+            let nextCorrectAnswer = this.state.requestedData[this.state.currentQuestionIndex + 1].correct_answer
+
+            if (e.target.innerText === this.state.currentCorrectAnswer) {
+                answerEvaluation = true
+                currentScore += 1 
+                this.currentScore = currentScore
+            } else{
+                answerEvaluation = false
+            }
+            this.setState({answersActive: false, evaluationActive: true, answerEvaluation: answerEvaluation})
+            setTimeout(() => {
+                this.setState({currentQuestionIndex: questionIndexPlusOne, currentScore: currentScore, answersActive: true, evaluationActive: false, currentCorrectAnswer: nextCorrectAnswer})
+            }, 200)}
+    }
+    ratingHandler = (score) => {
+        let rating = ''
+        switch(score){
+        case 0: 
+        case 1:
+        case 2:
+            rating = 'Village Idiot'
+            break
+        case 3:
+        case 4:
+        case 5:
+            rating = 'Jester'
+            break
+        case 6:
+        case 7:
+            rating = 'Squire'
+            break
+        case 8:
+        case 9:
+            rating = 'Knight'
+            break
+        case 10:
+            rating = 'Well read scholar'
+            break
+        default: 
+            rating = 'Something went wrong...'
+
         }
-        this.setState({answersActive: false, evaluationActive: true, AnswerEvaluation: answerEvaluation})
-        setTimeout(() => {
-            this.setState({currentQuestionIndex: questionIndexPlusOne, currentScore: currentScore, answersActive: true, evaluationActive: false, currentCorrectAnswer: nextCorrectAnswer})
-        }, 2000)
+        return rating
     }
     componentDidMount() {
         axios
@@ -104,7 +150,7 @@ class Display extends Component {
     }
     render(){
         return(
-            this.state.displayActive ? 
+            this.state.homeDisplayActive ? 
             <div className={classes.Display}>
             <h2>Test your knowledge!</h2>
             <p>Choose trivia settings</p>
@@ -136,14 +182,16 @@ class Display extends Component {
                 clicked={this.requstURLHandler}>Submit</Button>
             </div> : 
                 <div>
+                    {!this.state.resultsPageActive ? 
+                    <div>
                     <QuestionDisplay>
                         {this.state.currentQuestionIndex + 1}: {this.state.requestedQuestions[this.state.currentQuestionIndex]}
                     </QuestionDisplay>
-                        <strong><p style={{margin: '5px'}}>Current Score: {this.currentScore}</p></strong>
+                        <strong><p style={{margin: '10px'}}>Current Score: {this.currentScore}</p></strong>
                     <AnswersDisplay>
                     {this.state.evaluationActive ?
                         <section>
-                            {this.state.AnswerEvaluation ? <AnswerEvaluation Correct /> : <AnswerEvaluation />}
+                            {this.state.answerEvaluation ? <AnswerEvaluation Correct /> : <AnswerEvaluation />}
                         </section> : null }
                         <AnswersULWrapper>
                             {this.state.answersActive ? 
@@ -155,6 +203,8 @@ class Display extends Component {
                             </ul> : null}
                         </AnswersULWrapper>
                     </AnswersDisplay>
+                    </div> : <ResultsPage FinalScore={this.state.currentScore} Rating={this.ratingHandler(this.state.currentScore)}/>
+                    }
                 </div> 
           )}
 }

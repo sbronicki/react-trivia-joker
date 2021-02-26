@@ -13,9 +13,6 @@
 .Hidden {
     display: none;
 }
-.Answer {
-
-}
 
 @media(min-width: 600px) {
   .Button {
