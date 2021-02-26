@@ -12,6 +12,9 @@
 .Footer ul {
     list-style: none;
 }
+.Footer .links {
+    
+}
 
 
 @media(min-width: 600px){

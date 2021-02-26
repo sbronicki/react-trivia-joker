@@ -5,11 +5,11 @@ import classes from './Footer.module.css'
 
 const footer = () => (
     <footer className={classes.Footer}>
-        <ul>
-            <li><FaGithub size="2em" color="#fff" /></li>
+        {/* <ul>
+            <li><FaGithub className={classes.links} color="#fff" /></li>
             <li><FaLinkedin size="2em" color="#fff" /></li>
             <li><FaPortrait size="2em" color="#fff" /></li>
-        </ul>
+        </ul> */}
     </footer>
 )
 
