@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import axios from 'axios'
 import unescape from 'lodash/unescape'
+import shuffle from 'lodash/shuffle'
 // import Skeleton from 'react-loading-skeleton' 
 
 import classes from './Display.module.css'
@@ -14,8 +15,9 @@ import DataErrorMessage from '../../Error/DataError'
 import NetworkErrorMessage from '../../Error/NetworkError'
 
     // STILL NEED TO DO:
-    // make correct answer choice random
-    // fix mobile view => footer blocking submit either disable on mobile or restyle
+    // true/false always make true first
+    // multiple choice answers 2x2
+    // unescape &#39; and &shy;
     // use skeleton as ui loader
     // general restructure => delegate code to differennt functions / apps & combine reused css to utility files
 
@@ -59,7 +61,15 @@ class Display extends Component {
 
                 let incorrectAnswersArray = response.data.results[response.data.results.indexOf(entry)].incorrect_answers
                 let correctAnswer = unescape(response.data.results[response.data.results.indexOf(entry)].correct_answer)
-                let allAnswersArray = [...incorrectAnswersArray, correctAnswer]
+                let allAnswersArray = shuffle([...incorrectAnswersArray, correctAnswer])
+
+                if(allAnswersArray[0] !== 'True') {
+                    console.log(allAnswersArray[0])
+                    let falseVal = allAnswersArray[0]
+                    let trueVal = allAnswersArray[1]
+                    allAnswersArray[0] = trueVal
+                    allAnswersArray[1] = falseVal
+                }
 
                 this.requestedAnswers.push(allAnswersArray)
             }
