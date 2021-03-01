@@ -4,7 +4,6 @@ import unescape from 'lodash/unescape'
 import shuffle from 'lodash/shuffle'
 // import Skeleton from 'react-loading-skeleton' 
 
-import classes from './Display.module.css'
 import Button from '../../Button/Button'
 import QuestionDisplay from '../QuestionDisplay/QuestionDisplay'
 import AnswersDisplay from '../AnswersDisplay/AnswersDisplay'
