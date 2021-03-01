@@ -13,6 +13,7 @@ import AnswersULWrapper from '../../hoc/AnswersULWrapper'
 import ResultsPage from '../ResultsPage/ResultsPage'
 import DataErrorMessage from '../../Error/DataError'
 import NetworkErrorMessage from '../../Error/NetworkError'
+import HomeDisplay from '../HomeDisplay/HomeDisplay'
 
     // STILL NEED TO DO:
     // multiple choice answers 2x2
@@ -51,7 +52,7 @@ class Display extends Component {
         difficulty: 'easy',
         type: 'boolean'
     }
-    requstURLHandler = () => {
+    requestURLHandler = () => {
         axios
         .get(`https://opentdb.com/api.php?amount=10&category=${this.selectedValues.category}&difficulty=${this.selectedValues.difficulty}&type=${this.selectedValues.type}`)
         .then(response => {
@@ -172,36 +173,10 @@ class Display extends Component {
         return(
             this.state.error ?  (this.state.networkError ? <NetworkErrorMessage /> : <DataErrorMessage />) :
         this.state.homeDisplayActive ? 
-            <div className={classes.Display}>
-            <h2>Test your knowledge!</h2>
-            <p>Choose trivia settings</p>
-                <ul>
-                    <li>
-                        <p>Category:</p>
-                        <select name="category" onChange={this.choiceSelectedHandler}>
-                            {this.state.categoryOptions}
-                        </select>
-                    </li>
-                    <li>
-                        <p>Difficulty:</p>                     
-                        <select name="difficulty" onChange={this.choiceSelectedHandler}>
-                            <option value="easy">Easy</option>
-                            <option value="medium">Medium</option>
-                            <option value="hard">Hard</option>
-                        </select>
-                    </li>
-                    <li>
-                        <p>Type:</p>
-                        <select name="type" onChange={this.choiceSelectedHandler}>
-                            <option value="boolean">True/False</option>
-                            <option value="multiple">Multiple Choice</option>
-                        </select>
-                    </li>
-                </ul>
-                <Button 
-                btnType="Submit"
-                clicked={this.requstURLHandler}>Submit</Button>
-            </div> : 
+                <HomeDisplay 
+                requestURL={this.requestURLHandler} 
+                choiceSelected={this.choiceSelectedHandler} 
+                categoryOptions = {this.state.categoryOptions}/> :
                 <div>
                     {!this.state.resultsPageActive ? 
                     <div>

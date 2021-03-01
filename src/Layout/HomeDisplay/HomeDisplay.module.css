@@ -1,0 +1,67 @@
+.HomeDisplay{
+    margin: 15px 0;
+    min-width: 300px;
+}
+.HomeDisplay ul {
+    padding: 0;
+    margin: 0;
+}
+.HomeDisplay li{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 12px 0;
+}
+.HomeDisplay h2 {
+    margin: 8px 8px 18px 8px;
+}
+.HomeDisplay p {
+    margin: 8px;
+    padding: 0 10%;
+    font-weight: 500;
+    font-size: 1.3rem;
+  
+}
+.HomeDisplay Select{
+    padding: 8px;
+    margin: 15px 40px 0 0;
+    width: 100px;
+    border-radius: 2px;
+    border: 1px solid black;
+    font-size: 1.2rem;
+    background-color: ivory;
+}
+.HomeDisplay Button {
+    margin-top: 20px;
+}
+
+@media(min-width: 600px) {
+     .HomeDisplay {
+        max-width: 1022px;
+        min-width: 600px;
+        width: 85%;
+        margin: 8px auto;
+        border: 1px solid #eee;
+        box-shadow: 0 2px 3px #ccc;
+        height: 500px;
+    }
+    .HomeDisplay ul {
+        padding-top: 15px;
+    }
+    .HomeDisplay h2 {
+        font-size: 3rem;
+    }
+    .HomeDisplay p {
+        font-size: 2.5rem;
+    }
+    .HomeDisplay Select{
+        margin-right:10%;
+        min-width: 35%;
+        padding: 16px 0px 16px 5%;
+        font-size: 1.5rem;
+        font-weight: 550;
+    }
+    .HomeDisplay Button {
+        margin-top: 110px;
+    }
+}
